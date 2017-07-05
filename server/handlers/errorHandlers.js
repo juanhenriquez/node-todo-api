@@ -4,6 +4,12 @@ const catchErrors = requestHandler => {
   };
 };
 
+const notFoundErrors = (req, res, next) => {
+  const err = new Error('Not found');
+  err.status = 404;
+  next(err);
+};
+
 const messageValidationErrors = (err, req, res, next) => {
   if(!err.errors) return next(err);
   const errorList = Object.keys(err.errors);
@@ -14,5 +20,5 @@ const messageValidationErrors = (err, req, res, next) => {
 };
 
 module.exports = {
-  catchErrors, messageValidationErrors
+  catchErrors, messageValidationErrors, notFoundErrors
 };

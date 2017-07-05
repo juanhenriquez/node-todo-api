@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 // import handlers
-const { messageValidationErrors } = require('./handlers/errorHandlers');
+const { messageValidationErrors, notFoundErrors } = require('./handlers/errorHandlers');
 
 // create the app
 const app = express();
@@ -18,6 +18,7 @@ const routes = require('./routes/routes');
 app.use('/api', routes);
 
 // error handlers
+app.use(notFoundErrors);
 app.use(messageValidationErrors);
 
 app.listen(PORT, () => {
