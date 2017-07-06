@@ -27,7 +27,7 @@ class TodosController {
     if (todo) {
       return res.send({ todo });
     } else {
-      return res.send({ message: 'Todo not found' });
+      return res.status(404).send({ message: 'Todo not found' });
     }
   }
 }
