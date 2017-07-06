@@ -1,3 +1,4 @@
+const { ObjectID } = require('mongodb');
 const Todo = require('./../../models/todo');
 
 class TodosController {
@@ -15,6 +16,19 @@ class TodosController {
       todo: savedTodo,
       message: 'Todo was created successfully!'
     });
+  }
+
+  static async show(req, res, next) {
+    if (!ObjectID.isValid(req.params.id)) {
+      return res.status(404).send({ message: 'Todo not found' });
+    }
+
+    const todo = await Todo.findById(req.params.id);
+    if (todo) {
+      return res.send({ todo });
+    } else {
+      return res.send({ message: 'Todo not found' });
+    }
   }
 }
 
