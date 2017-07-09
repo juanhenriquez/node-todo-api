@@ -9,6 +9,7 @@ const { catchErrors } = require('./../handlers/errorHandlers');
 router.get('/', catchErrors(TodosController.index));
 router.post('/', catchErrors(TodosController.create));
 router.get('/:id', catchErrors(TodosController.show));
+router.put('/:id', catchErrors(TodosController.update));
 router.delete('/:id', catchErrors(TodosController.remove));
 
 module.exports = router;

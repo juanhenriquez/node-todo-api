@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const { ObjectID } = require('mongodb');
 const Todo = require('./../../models/todo');
 
@@ -26,6 +27,28 @@ class TodosController {
     const todo = await Todo.findById(req.params.id);
     if (todo) {
       return res.send({ todo });
+    } else {
+      return res.status(404).send({ message: 'Todo not found' });
+    }
+  }
+
+  static async update(req, res, next) {
+    const body = _.pick(req.body, ['text', 'completed']);
+    if (!ObjectID.isValid(req.params.id)) {
+      return res.status(404).send({ message: 'Todo not found' });
+    }
+
+    if (_.isBoolean(body.completed) && body.completed) {
+      body.completedAt = new Date().getTime();
+    } else {
+      body.completed = false;
+      body.completedAt = null;
+    }
+
+    const todo = await Todo.findByIdAndUpdate(req.params.id, { $set: body }, { new: true });
+
+    if (todo) {
+      return res.send({ todo, message: 'Todo was update successfully!' });
     } else {
       return res.status(404).send({ message: 'Todo not found' });
     }
