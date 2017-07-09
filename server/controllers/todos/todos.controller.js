@@ -30,6 +30,21 @@ class TodosController {
       return res.status(404).send({ message: 'Todo not found' });
     }
   }
+
+  static async remove(req, res, next) {
+    if (!ObjectID.isValid(req.params.id)) {
+      return res
+        .status(404)
+        .send({ message: 'Todo not found' });
+    }
+
+    const todo = await Todo.findByIdAndRemove(req.params.id);
+    if (todo) {
+      return res.send({ todo, message: 'Todo has been removed successfully!' });
+    } else {
+      return res.status(404).send({ message: 'Todo not found' });
+    }
+  }
 }
 
 module.exports = TodosController;

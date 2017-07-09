@@ -4,7 +4,7 @@ const { Schema } = db;
 const todoSchema = new Schema({
   text: {
     type: String,
-    required: true,
+    required: 'You must supply an title',
     minlength: 1,
     trim: true
   },
