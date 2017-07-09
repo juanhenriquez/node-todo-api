@@ -116,6 +116,60 @@ describe('TODO\'s Routes', () => {
     });
   });
 
+  describe('PUT /todos/:id', () => {
+    it('should update todo', done => {
+      const id = todos[0]._id.toHexString();
+
+      request(app)
+        .put(`/api/todos/${id}`)
+        .send({ text: 'updated text', completed: true })
+        .expect(200)
+        .expect(res => {
+          expect(res.body.todo.text).toBe('updated text');
+          expect(res.body.todo.completed).toBe(true);
+          expect(res.body.todo.completedAt).toBeA('number');
+        })
+        .end(done);
+    });
+
+    it('should clear completedAt when todo is not completed', done => {
+      const id = todos[0]._id.toHexString();
+
+      request(app)
+        .put(`/api/todos/${id}`)
+        .send({ text: 'updated text', completed: false })
+        .expect(200)
+        .expect(res => {
+          expect(res.body.todo.text).toBe('updated text');
+          expect(res.body.todo.completed).toBe(false);
+          expect(res.body.todo.completedAt).toNotExist();
+        })
+        .end(done);
+    });
+
+    it('should return 404 if todo is not found', done => {
+      const id = new ObjectID().toHexString();
+
+      request(app)
+        .put(`/api/todos/${id}`)
+        .expect(404)
+        .expect(res => {
+          expect(res.body.message).toBe('Todo not found');
+        })
+        .end(done);
+    });
+
+    it('should return 404 for non-object ids', done => {
+      request(app)
+        .put(`/api/todos/1234`)
+        .expect(404)
+        .expect(res => {
+          expect(res.body.message).toBe('Todo not found');
+        })
+        .end(done);
+    });
+  });
+
   describe('DELETE /todos/:id', () => {
     it('should remove a todo', done => {
       const id = todos[0]._id.toHexString();
