@@ -11,12 +11,19 @@ const notFoundErrors = (req, res, next) => {
 };
 
 const messageValidationErrors = (err, req, res, next) => {
-  if(!err.errors) return next(err);
-  const errorList = Object.keys(err.errors);
+  console.dir(err);
+  if(!err.errors && !err.code) return next(err);
 
+  const errorList = Object.keys(err.errors);
+  //err.errors[key].message
   res
     .status(400)
-    .send({ errors: errorList.map(key => err.errors[key].message) });
+    .send({
+      errors: errorList.map(key => {
+        const { message, kind, path, value } = err.errors[key];
+        return { message, kind, path, value };
+      })
+    });
 };
 
 module.exports = {

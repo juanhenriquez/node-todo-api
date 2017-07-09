@@ -48,7 +48,7 @@ class TodosController {
     const todo = await Todo.findByIdAndUpdate(req.params.id, { $set: body }, { new: true });
 
     if (todo) {
-      return res.send({ todo, message: 'Todo was update successfully!' });
+      return res.send({ todo, message: 'Todo was updated successfully!' });
     } else {
       return res.status(404).send({ message: 'Todo not found' });
     }

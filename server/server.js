@@ -4,8 +4,6 @@ const bodyParser = require('body-parser');
 // import handlers
 const { messageValidationErrors, notFoundErrors } = require('./handlers/errorHandlers');
 
-// import and set main routes
-const routes = require('./routes/routes');
 
 // config info
 const env = process.env.NODE_ENV || 'development';
@@ -20,6 +18,9 @@ const PORT = process.env.PORT;
 
 // create the app
 const app = express();
+
+// import and set main routes
+const routes = require('./routes/routes');
 
 // set middlewares
 app.use(bodyParser.json());
