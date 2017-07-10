@@ -2,6 +2,7 @@ const validator = require('validator');
 const uniqueValidator = require('mongoose-unique-validator');
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
+const bcrypt = require('bcryptjs');
 const db  = require('./../db/mongoose');
 const { Schema } = db;
 
@@ -72,6 +73,20 @@ UserSchema.statics.findByIdAndToken = function (id, token) {
 
   });
 };
+
+UserSchema.pre('save', function (next) {
+  const user = this;
+  if (user.isModified('password')) {
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(user.password, salt, (err, hash) => {
+        user.password = hash;
+        next();
+      });
+    });
+  } else {
+    next();
+  }
+});
 
 UserSchema.plugin(uniqueValidator, { message: 'Sorry, {VALUE} is already in use. Try a different email.'});
 
