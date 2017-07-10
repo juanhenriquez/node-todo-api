@@ -48,6 +48,31 @@ UserSchema.methods.generateAuthToken = function () {
   return { token, access };
 };
 
+UserSchema.statics.findByIdAndToken = function (id, token) {
+  const User = this;
+  return new Promise(async (resolve, reject) => {
+    try {
+      const user = await User.findById(id);
+      if (user) { 
+        const isCorrectUser = user.tokens.filter(t => {
+          return (t.token === token && t.access === 'auth') ? true : false;
+        });
+
+        if (isCorrectUser.length) {
+          resolve(user.toJSON());
+        } else {
+          reject({ type: 'Forbidden', message: 'You can access to the requested data' });
+        }
+      } else {
+        reject({ type: 'NotFound', message: 'This account doesn\'t exist' });
+      }
+    } catch (findByIdError) {
+      reject({ type: 'NotFound', message: 'This account doesn\'t exist' });
+    }
+
+  });
+};
+
 UserSchema.plugin(uniqueValidator, { message: 'Sorry, {VALUE} is already in use. Try a different email.'});
 
 module.exports = db.model('User', UserSchema);

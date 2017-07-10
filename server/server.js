@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 // import handlers
-const { messageValidationErrors, notFoundErrors } = require('./handlers/errorHandlers');
+const { messageValidationErrors, notFoundErrors, forbiddenErrors } = require('./middlewares/errors.middleware');
 
 
 // config info
@@ -30,6 +30,7 @@ app.use('/api', routes);
 
 // error handlers
 app.use(notFoundErrors);
+app.use(forbiddenErrors);
 app.use(messageValidationErrors);
 
 app.listen(PORT, () => {

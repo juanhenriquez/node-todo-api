@@ -21,21 +21,21 @@ class TodosController {
 
   static async show(req, res, next) {
     if (!ObjectID.isValid(req.params.id)) {
-      return res.status(404).send({ message: 'Todo not found' });
+      return res.status(404).send({ error: { type: 'NotFound', message: 'Todo not found' } });
     }
 
     const todo = await Todo.findById(req.params.id);
     if (todo) {
       return res.send({ todo });
     } else {
-      return res.status(404).send({ message: 'Todo not found' });
+      return res.status(404).send({ error: { type: 'NotFound', message: 'Todo not found' } });
     }
   }
 
   static async update(req, res, next) {
     const body = _.pick(req.body, ['text', 'completed']);
     if (!ObjectID.isValid(req.params.id)) {
-      return res.status(404).send({ message: 'Todo not found' });
+      return res.status(404).send({ error: { type: 'NotFound', message: 'Todo not found' } });
     }
 
     if (_.isBoolean(body.completed) && body.completed) {
@@ -50,7 +50,7 @@ class TodosController {
     if (todo) {
       return res.send({ todo, message: 'Todo was updated successfully!' });
     } else {
-      return res.status(404).send({ message: 'Todo not found' });
+      return res.status(404).send({ error: { type: 'NotFound', message: 'Todo not found' } });
     }
   }
 
@@ -58,14 +58,14 @@ class TodosController {
     if (!ObjectID.isValid(req.params.id)) {
       return res
         .status(404)
-        .send({ message: 'Todo not found' });
+        .send({ error: { type: 'NotFound', message: 'Todo not found' } });
     }
 
     const todo = await Todo.findByIdAndRemove(req.params.id);
     if (todo) {
       return res.send({ todo, message: 'Todo has been removed successfully!' });
     } else {
-      return res.status(404).send({ message: 'Todo not found' });
+      return res.status(404).send({ error: { type: 'NotFound', message: 'Todo not found' } });
     }
   }
 }

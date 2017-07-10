@@ -100,7 +100,7 @@ describe('TODO\'s Routes', () => {
         .get(`/api/todos/${id}`)
         .expect(404)
         .expect(res => {
-          expect(res.body.message).toBe('Todo not found');
+          expect(res.body.error.message).toBe('Todo not found');
         })
         .end(done);
     });
@@ -110,7 +110,7 @@ describe('TODO\'s Routes', () => {
         .get(`/api/todos/1234`)
         .expect(404)
         .expect(res => {
-          expect(res.body.message).toBe('Todo not found');
+          expect(res.body.error.message).toBe('Todo not found');
         })
         .end(done);
     });
@@ -154,7 +154,7 @@ describe('TODO\'s Routes', () => {
         .put(`/api/todos/${id}`)
         .expect(404)
         .expect(res => {
-          expect(res.body.message).toBe('Todo not found');
+          expect(res.body.error.message).toBe('Todo not found');
         })
         .end(done);
     });
@@ -164,7 +164,7 @@ describe('TODO\'s Routes', () => {
         .put(`/api/todos/1234`)
         .expect(404)
         .expect(res => {
-          expect(res.body.message).toBe('Todo not found');
+          expect(res.body.error.message).toBe('Todo not found');
         })
         .end(done);
     });
@@ -201,7 +201,7 @@ describe('TODO\'s Routes', () => {
         .delete(`/api/todos/${id}`)
         .expect(404)
         .expect(res => {
-          expect(res.body.message).toBe('Todo not found');
+          expect(res.body.error.message).toBe('Todo not found');
         })
         .end(done);
     });
@@ -211,7 +211,7 @@ describe('TODO\'s Routes', () => {
       .get(`/api/todos/1234`)
       .expect(404)
       .expect(res => {
-        expect(res.body.message).toBe('Todo not found');
+        expect(res.body.error.message).toBe('Todo not found');
       })
       .end(done);
     });
