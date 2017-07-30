@@ -14,7 +14,7 @@ const UserSchema = new Schema({
     trim: true,
     unique: true,
     validate: {
-      async: false,
+      isAsync: false,
       validator: validator.isEmail,
       message: '{VALUE} is not a valid email address'
     }

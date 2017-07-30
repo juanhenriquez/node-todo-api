@@ -5,7 +5,7 @@ const isAuthenticated = async (req, res, next) => {
   const token = req.header('x-auth');
   jwt.verify(token, 'abc123', (err, decoded) => {
     if (err) {
-      console.log('error');
+      //console.log('error');
       // the token is invalid
       return res
         .status(401)
@@ -18,7 +18,7 @@ const isAuthenticated = async (req, res, next) => {
 };
 
 const canAccess = async (req, res, next) => {
-  console.log('hola');
+  //console.log('hola');
   try {
     user = await User.findByIdAndToken(req.decodedToken._id, req.token);
     if (user) {

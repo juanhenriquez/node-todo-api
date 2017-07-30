@@ -5,8 +5,7 @@ const catchErrors = requestHandler => {
 };
 
 const notFoundErrors = (err, req, res, next) => {
-  console.log(err);
-  if (err.error.type === 'NotFound') {
+  if (err.error && err.error.type === 'NotFound') {
     return res.status(404).send({ error: {
       type: 'NotFound',
       message: err.error.message
@@ -16,7 +15,7 @@ const notFoundErrors = (err, req, res, next) => {
 };
 
 const forbiddenErrors = (err, req, res, next) => {
-  if (err.error.type === 'Forbidden') {
+  if (err.error && err.error.type === 'Forbidden') {
     return res.status(403).send({ error: {
       type: 'Forbidden',
       message: err.error.message
